@@ -19,13 +19,7 @@ Plugin for Statamic that expands the standard cache validation to invalidate the
 ### Installation
 
 ```bash
-# Composer
 composer require van-ons/statamic-static-cache-buster
-
-# npm
-npm install @van-ons/statamic-static-cache-buster
-
-# etc.
 ```
 
 ### Usage
