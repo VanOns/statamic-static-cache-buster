@@ -1,0 +1,39 @@
+{
+  "name": "van-ons/statamic-static-cache-buster",
+  "description": "A Laravel package for easy importing of a configured environment.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "statamic",
+    "static cache",
+    "VanOns"
+  ],
+  "autoload": {
+    "psr-4": {
+      "VanOns\\StatamicStaticCacheBuster\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Jim Elvers",
+      "email": "jimelvers@van-ons.nl"
+    },
+    {
+      "name": "Van Ons",
+      "email": "opensource@van-ons.nl"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "laravel/framework": ">=10",
+    "statamic/cms": ">=5"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pixelfear/composer-dist-plugin": true
+    }
+  }
+}
