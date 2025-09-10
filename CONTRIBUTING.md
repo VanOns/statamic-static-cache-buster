@@ -24,6 +24,6 @@ By contributing, you agree that your contributions will be licensed under the [M
 - [How to contribute to Open Source](https://opensource.guide/how-to-contribute/)
 
 [code-of-conduct]: CODE_OF_CONDUCT.md
-[issues]: https://github.com/VanOns/statamic-smart-cache-invalidation/issues
-[discussions]: https://github.com/VanOns/statamic-smart-cache-invalidation/discussions
+[issues]: https://github.com/VanOns/statamic-static-cache-buster/issues
+[discussions]: https://github.com/VanOns/statamic-static-cache-buster/discussions
 [license]: LICENSE.md

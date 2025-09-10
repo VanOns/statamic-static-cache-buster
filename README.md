@@ -1,6 +1,6 @@
-<p align="center"><img src="art/social-card.png" alt="Social card of Statamic Smart Cache Invalidation"></p>
+<p align="center"><img src="art/social-card.png" alt="Social card of Statamic Static Cache Buster"></p>
 
-# Statamic Smart Cache Invalidation
+# Statamic Static Cache Buster
 
 <!-- BADGES -->
 
@@ -12,10 +12,10 @@ Plugin for Statamic that expands the standard cache validation to invalidate the
 
 ```bash
 # Composer
-composer require van-ons/statamic-smart-cache-invalidation
+composer require van-ons/statamic-static-cache-buster
 
 # npm
-npm install @van-ons/statamic-smart-cache-invalidation
+npm install @van-ons/statamic-static-cache-buster
 
 # etc.
 ```

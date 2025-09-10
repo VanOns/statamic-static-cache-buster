@@ -13,4 +13,4 @@ across such a case, please let us know by [opening an issue][issues], or by addi
 * Run `php artisan migrate` to update the database.
 -->
 
-[issues]: https://github.com/VanOns/statamic-smart-cache-invalidation/issues
+[issues]: https://github.com/VanOns/statamic-static-cache-buster/issues
