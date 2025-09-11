@@ -13,6 +13,13 @@
       "VanOns\\StatamicStaticCacheBuster\\": "src/"
     }
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "VanOns\\StatamicStaticCacheBuster\\StatamicStaticCacheBusterServiceProvider"
+      ]
+    }
+  },
   "authors": [
     {
       "name": "Jim Elvers",
