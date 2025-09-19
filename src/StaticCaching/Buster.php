@@ -16,6 +16,7 @@ use Statamic\Globals\GlobalSet;
 use Statamic\Globals\Variables;
 use Statamic\Sites\Site;
 use Statamic\StaticCaching\DefaultInvalidator;
+use Statamic\Structures\Nav;
 use Statamic\Structures\Page;
 use Statamic\Taxonomies\LocalizedTerm;
 use Statamic\Taxonomies\TermCollection;
@@ -76,6 +77,14 @@ class Buster extends DefaultInvalidator
                 $this->cacher->invalidateUrl($entryToCheck->absoluteUrl());
             }
         });
+    }
+
+    /**
+     * @param Nav $nav
+     */
+    protected function invalidateNavUrls($nav): void
+    {
+        $this->invalidateAllUrls();
     }
     // endregion Invalidation methods
 
