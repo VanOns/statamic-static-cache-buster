@@ -3,6 +3,7 @@
 namespace VanOns\StatamicStaticCacheBuster\StaticCaching;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 use Statamic\Assets\Asset;
 use Statamic\Assets\AssetCollection;
 use Statamic\Entries\Entry;
@@ -15,15 +16,38 @@ use Statamic\Fields\Field;
 use Statamic\Globals\GlobalSet;
 use Statamic\Globals\Variables;
 use Statamic\Sites\Site;
+use Statamic\StaticCaching\Cacher;
 use Statamic\StaticCaching\DefaultInvalidator;
 use Statamic\Structures\Nav;
 use Statamic\Structures\Page;
 use Statamic\Taxonomies\LocalizedTerm;
 use Statamic\Taxonomies\TermCollection;
+use VanOns\StatamicStaticCacheBuster\Jobs\BustEntryStaticCache;
 
 class Buster extends DefaultInvalidator
 {
+    protected int $chunkSize = 500;
+    protected ?string $queue;
+
+    public function __construct(Cacher $cacher, $rules = [])
+    {
+        parent::__construct($cacher, $rules);
+
+        $this->chunkSize = config('statamic/static-cache-buster.chunk_size', 500);
+        $this->queue = config('statamic/static-cache-buster.queue');
+    }
+
     // region Invalidation methods
+    public function bustEntry(
+        Entry                     $entry,
+        Asset|Entry|LocalizedTerm $value,
+    ): void
+    {
+        if ($this->valueInFieldSet($value, $entry, $entry->blueprint()->fields()->all())) {
+            $this->invalidateEntry($entry);
+        }
+    }
+
     /**
      * @param Asset $asset
      */
@@ -44,10 +68,8 @@ class Buster extends DefaultInvalidator
             }
         });
 
-        EntryFacade::all()->each(function (Entry $entry) use ($asset) {
-            if ($this->valueInFieldSet($asset, $entry, $entry->blueprint()->fields()->all())) {
-                $this->invalidateEntry($entry);
-            }
+        EntryFacade::query()->chunk($this->chunkSize, function (Collection $entries) use ($asset) {
+            BustEntryStaticCache::dispatch($entries, $asset)->onQueue($this->queue);
         });
     }
 
@@ -58,10 +80,8 @@ class Buster extends DefaultInvalidator
     {
         parent::invalidateEntryUrls($entry);
 
-        EntryFacade::all()->each(function (Entry $entryToCheck) use ($entry) {
-            if ($this->valueInFieldSet($entry, $entryToCheck, $entryToCheck->blueprint()->fields()->all())) {
-                $this->invalidateEntry($entryToCheck);
-            }
+        EntryFacade::query()->chunk($this->chunkSize, function (Collection $entries) use ($entry) {
+            BustEntryStaticCache::dispatch($entries, $entry)->onQueue($this->queue);
         });
     }
 
@@ -72,10 +92,8 @@ class Buster extends DefaultInvalidator
     {
         parent::invalidateTermUrls($term);
 
-        EntryFacade::all()->each(function (Entry $entryToCheck) use ($term) {
-            if ($this->valueInFieldSet($term, $entryToCheck, $entryToCheck->blueprint()->fields()->all())) {
-                $this->invalidateEntry($entryToCheck);
-            }
+        EntryFacade::query()->chunk($this->chunkSize, function (Collection $entries) use ($term) {
+            BustEntryStaticCache::dispatch($entries, $term)->onQueue($this->queue);
         });
     }
 
