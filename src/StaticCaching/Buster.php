@@ -46,7 +46,7 @@ class Buster extends DefaultInvalidator
 
         EntryFacade::all()->each(function (Entry $entry) use ($asset) {
             if ($this->valueInFieldSet($asset, $entry, $entry->blueprint()->fields()->all())) {
-                $this->cacher->invalidateUrl($entry->absoluteUrl());
+                $this->invalidateEntry($entry);
             }
         });
     }
@@ -60,7 +60,7 @@ class Buster extends DefaultInvalidator
 
         EntryFacade::all()->each(function (Entry $entryToCheck) use ($entry) {
             if ($this->valueInFieldSet($entry, $entryToCheck, $entryToCheck->blueprint()->fields()->all())) {
-                $this->cacher->invalidateUrl($entryToCheck->absoluteUrl());
+                $this->invalidateEntry($entryToCheck);
             }
         });
     }
@@ -74,7 +74,7 @@ class Buster extends DefaultInvalidator
 
         EntryFacade::all()->each(function (Entry $entryToCheck) use ($term) {
             if ($this->valueInFieldSet($term, $entryToCheck, $entryToCheck->blueprint()->fields()->all())) {
-                $this->cacher->invalidateUrl($entryToCheck->absoluteUrl());
+                $this->invalidateEntry($entryToCheck);
             }
         });
     }
@@ -97,6 +97,16 @@ class Buster extends DefaultInvalidator
     // endregion Invalidation methods
 
     // region Helper methods
+    private function invalidateEntry(Entry $entry): void
+    {
+        $this->cacher->invalidateUrl($entry->absoluteUrl());
+
+        foreach (config('statamic/static-cache-buster.additional_entry_paths.' . $entry->collectionHandle(), []) as $path) {
+            dump($entry->absoluteUrl() . $path);
+            $this->cacher->invalidateUrl($entry->absoluteUrl() . $path);
+        }
+    }
+
     private function valueInFieldSet(
         Asset|Entry|LocalizedTerm $value,
         Arrayable|array           $data,
