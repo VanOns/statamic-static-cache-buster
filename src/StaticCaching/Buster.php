@@ -86,6 +86,14 @@ class Buster extends DefaultInvalidator
     {
         $this->invalidateAllUrls();
     }
+
+    /**
+     * @param Variables $variables
+     */
+    protected function invalidateGlobalUrls($variables): void
+    {
+        $this->invalidateAllUrls();
+    }
     // endregion Invalidation methods
 
     // region Helper methods
