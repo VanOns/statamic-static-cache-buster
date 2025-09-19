@@ -17,6 +17,8 @@ use Statamic\Globals\Variables;
 use Statamic\Sites\Site;
 use Statamic\StaticCaching\DefaultInvalidator;
 use Statamic\Structures\Page;
+use Statamic\Taxonomies\LocalizedTerm;
+use Statamic\Taxonomies\TermCollection;
 
 class Buster extends DefaultInvalidator
 {
@@ -61,14 +63,28 @@ class Buster extends DefaultInvalidator
             }
         });
     }
+
+    /**
+     * @param LocalizedTerm $term
+     */
+    protected function invalidateTermUrls($term): void
+    {
+        parent::invalidateTermUrls($term);
+
+        EntryFacade::all()->each(function (Entry $entryToCheck) use ($term) {
+            if ($this->valueInFieldSet($term, $entryToCheck, $entryToCheck->blueprint()->fields()->all())) {
+                $this->cacher->invalidateUrl($entryToCheck->absoluteUrl());
+            }
+        });
+    }
     // endregion Invalidation methods
 
     // region Helper methods
     private function valueInFieldSet(
-        Asset|Entry     $value,
-        Arrayable|array $data,
-        Arrayable|array $fieldset,
-        string          $prefix = '',
+        Asset|Entry|LocalizedTerm $value,
+        Arrayable|array           $data,
+        Arrayable|array           $fieldset,
+        string                    $prefix = '',
     ): bool
     {
         foreach ($fieldset as $field) {
@@ -81,10 +97,10 @@ class Buster extends DefaultInvalidator
     }
 
     private function valueInField(
-        Asset|Entry     $value,
-        Arrayable|array $data,
-        Arrayable|array $field,
-        string          $prefix = '',
+        Asset|Entry|LocalizedTerm $value,
+        Arrayable|array           $data,
+        Arrayable|array           $field,
+        string                    $prefix = '',
     ): bool
     {
         if (is_array($field) && array_key_exists('import', $field)) {
@@ -118,6 +134,7 @@ class Buster extends DefaultInvalidator
             (
                 ($value instanceof Asset && $type === 'assets')
                 || ($value instanceof Entry && $type === 'entries')
+                || ($value instanceof LocalizedTerm && $type === 'terms')
             )
             && $this->valueMatchesField($value, $data[$handle])
         ) {
@@ -143,13 +160,14 @@ class Buster extends DefaultInvalidator
     }
 
     private function valueMatchesField(
-        Asset|Entry                                     $value,
-        Asset|AssetCollection|Page|Entry|EntryCollection|null $fieldValue
+        Asset|Entry|LocalizedTerm                                                          $value,
+        Asset|AssetCollection|Page|Entry|EntryCollection|LocalizedTerm|TermCollection|null $fieldValue
     ): bool
     {
         if (
             ($value instanceof Asset && $fieldValue instanceof Asset && $fieldValue->id === $value->id)
             || ($value instanceof Entry && ($fieldValue instanceof Entry || $fieldValue instanceof Page) && $fieldValue->id === $value->id)
+            || ($value instanceof LocalizedTerm && $fieldValue instanceof LocalizedTerm && $value->id === $fieldValue->id)
         ) {
             return true;
         }
@@ -157,6 +175,7 @@ class Buster extends DefaultInvalidator
         if (
             ($value instanceof Asset && $fieldValue instanceof AssetCollection)
             || ($value instanceof Entry && $fieldValue instanceof EntryCollection)
+            || ($value instanceof LocalizedTerm && $fieldValue instanceof TermCollection)
         ) {
             foreach ($fieldValue as $item) {
                 if ($item->id === $value->id) {
