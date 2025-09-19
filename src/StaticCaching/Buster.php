@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Statamic\Assets\Asset;
 use Statamic\Assets\AssetCollection;
 use Statamic\Entries\Entry;
+use Statamic\Entries\EntryCollection;
 use Statamic\Facades\Entry as EntryFacade;
 use Statamic\Facades\Fieldset;
 use Statamic\Facades\GlobalSet as GlobalSetFacade;
@@ -15,6 +16,7 @@ use Statamic\Globals\GlobalSet;
 use Statamic\Globals\Variables;
 use Statamic\Sites\Site;
 use Statamic\StaticCaching\DefaultInvalidator;
+use Statamic\Structures\Page;
 
 class Buster extends DefaultInvalidator
 {
@@ -45,11 +47,25 @@ class Buster extends DefaultInvalidator
             }
         });
     }
+
+    /**
+     * @param Entry $entry
+     */
+    protected function invalidateEntryUrls($entry): void
+    {
+        parent::invalidateEntryUrls($entry);
+
+        EntryFacade::all()->each(function (Entry $entryToCheck) use ($entry) {
+            if ($this->valueInFieldSet($entry, $entryToCheck, $entryToCheck->blueprint()->fields()->all())) {
+                $this->cacher->invalidateUrl($entryToCheck->absoluteUrl());
+            }
+        });
+    }
     // endregion Invalidation methods
 
     // region Helper methods
     private function valueInFieldSet(
-        Asset           $value,
+        Asset|Entry     $value,
         Arrayable|array $data,
         Arrayable|array $fieldset,
         string          $prefix = '',
@@ -65,7 +81,7 @@ class Buster extends DefaultInvalidator
     }
 
     private function valueInField(
-        Asset           $value,
+        Asset|Entry     $value,
         Arrayable|array $data,
         Arrayable|array $field,
         string          $prefix = '',
@@ -98,7 +114,11 @@ class Buster extends DefaultInvalidator
             $handle = $prefix . $field['handle'];
         }
 
-        if ($type === 'assets'
+        if (
+            (
+                ($value instanceof Asset && $type === 'assets')
+                || ($value instanceof Entry && $type === 'entries')
+            )
             && $this->valueMatchesField($value, $data[$handle])
         ) {
             return true;
@@ -123,15 +143,21 @@ class Buster extends DefaultInvalidator
     }
 
     private function valueMatchesField(
-        Asset                      $value,
-        Asset|AssetCollection|null $fieldValue
+        Asset|Entry                                     $value,
+        Asset|AssetCollection|Page|Entry|EntryCollection|null $fieldValue
     ): bool
     {
-        if ($fieldValue instanceof Asset && $fieldValue->id === $value->id) {
+        if (
+            ($value instanceof Asset && $fieldValue instanceof Asset && $fieldValue->id === $value->id)
+            || ($value instanceof Entry && ($fieldValue instanceof Entry || $fieldValue instanceof Page) && $fieldValue->id === $value->id)
+        ) {
             return true;
         }
 
-        if ($fieldValue instanceof AssetCollection) {
+        if (
+            ($value instanceof Asset && $fieldValue instanceof AssetCollection)
+            || ($value instanceof Entry && $fieldValue instanceof EntryCollection)
+        ) {
             foreach ($fieldValue as $item) {
                 if ($item->id === $value->id) {
                     return true;
