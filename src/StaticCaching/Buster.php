@@ -121,19 +121,11 @@ class Buster extends DefaultInvalidator
     ): bool
     {
         if (is_array($field) && array_key_exists('import', $field)) {
-            $fieldset = Fieldset::find($field['import']);
-            if (array_key_exists('prefix', $field)) {
-                $prefix .= $field['prefix'];
-            }
-
-            if ($this->valueInFieldSet($value, $data, $fieldset->fields()->all(), $prefix)) {
-                return true;
-            }
-            return false;
+            return $this->valueInImportedFieldSet($value, $data, $field, $prefix);
         }
 
         if ($field instanceof Field) {
-            $type = $field->type();
+            $fieldType = $field->type();
             $handle = $prefix . $field->handle();
         } else {
             if (!array_key_exists('field', $field)
@@ -143,22 +135,18 @@ class Buster extends DefaultInvalidator
             ) {
                 return false;
             }
-            $type = $field['field']['type'];
+            $fieldType = $field['field']['type'];
             $handle = $prefix . $field['handle'];
         }
 
         if (
-            (
-                ($value instanceof Asset && $type === 'assets')
-                || ($value instanceof Entry && $type === 'entries')
-                || ($value instanceof LocalizedTerm && $type === 'terms')
-            )
+            $this->valueMatchesFieldType($value, $fieldType)
             && $this->valueMatchesField($value, $data[$handle])
         ) {
             return true;
         }
 
-        if ($type === 'replicator') {
+        if ($fieldType === 'replicator') {
             if ($field instanceof Field) {
                 $config = $field->config();
             } else {
@@ -174,6 +162,34 @@ class Buster extends DefaultInvalidator
         }
 
         return false;
+    }
+
+    private function valueInImportedFieldSet(
+        Asset|Entry|LocalizedTerm $value,
+        Arrayable|array           $data,
+        Arrayable|array           $field,
+        string                    $prefix = '',
+    ): bool
+    {
+        $fieldset = Fieldset::find($field['import']);
+        if (array_key_exists('prefix', $field)) {
+            $prefix .= $field['prefix'];
+        }
+
+        if ($this->valueInFieldSet($value, $data, $fieldset->fields()->all(), $prefix)) {
+            return true;
+        }
+        return false;
+    }
+
+    private function valueMatchesFieldType(
+        Asset|Entry|LocalizedTerm $value,
+        string                    $fieldType,
+    ): bool
+    {
+        return ($value instanceof Asset && $fieldType === 'assets')
+            || ($value instanceof Entry && $fieldType === 'entries')
+            || ($value instanceof LocalizedTerm && $fieldType === 'terms');
     }
 
     private function valueMatchesField(
