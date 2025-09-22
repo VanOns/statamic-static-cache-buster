@@ -44,10 +44,6 @@ However, there are some options to adjust the buster to your specific needs.
 
 See [configuration] for the configuration options.
 
-## Documentation
-
-Please see the [documentation] for detailed information about installation and usage.
-
 ## Contributing
 
 Please see [contributing] for more information about how you can contribute.
