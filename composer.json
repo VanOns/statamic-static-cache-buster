@@ -1,6 +1,6 @@
 {
   "name": "van-ons/statamic-static-cache-buster",
-  "description": "A Laravel package for easy importing of a configured environment.",
+  "description": "A Statamic package that expands the standard static cache invalidation.",
   "type": "library",
   "license": "MIT",
   "keywords": [
