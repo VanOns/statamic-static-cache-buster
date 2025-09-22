@@ -61,3 +61,11 @@ The default chunk size is 500:
 ```php
 'chunk_size' => 500,
 ```
+
+# Extending the buster
+
+If there is additional logic needed for your website that is not covered by the configuration,
+you can also extend the buster to implement any specific use cases that should be covered.
+
+The buster is meant to provide a broader basis to work from,
+while being easy to adapt to any specific needs.
