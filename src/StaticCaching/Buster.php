@@ -257,11 +257,9 @@ class Buster extends DefaultInvalidator
 
     private function invalidateAllUrls(Site $site = null): void
     {
-        if (!$site) {
-            foreach (SiteFacade::all() as $site) {
-                $this->cacher->invalidateUrl($site->absoluteUrl() . '/*');
-            }
-        } else {
+        $sites = $site ? [$site] : SiteFacade::all();
+
+        foreach ($sites as $site) {
             $this->cacher->invalidateUrl($site->absoluteUrl() . '/*');
         }
     }
