@@ -40,7 +40,7 @@ When entries in your `blog_posts` collection also have separate comments and que
 
 ## Queue
 
-Due to the high volume of entries that need to be check for invalidation,
+Due to the high volume of entries that need to be checked for invalidation,
 the buster splits this up into separate jobs.
 
 These jobs are normally added to the default queue, but you can adjust this as necessary:
