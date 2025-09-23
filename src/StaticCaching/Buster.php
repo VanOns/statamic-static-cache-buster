@@ -119,7 +119,6 @@ class Buster extends DefaultInvalidator
         $this->cacher->invalidateUrl($entry->absoluteUrl());
 
         foreach (config('statamic/static-cache-buster.additional_entry_paths.' . $entry->collectionHandle(), []) as $path) {
-            dump($entry->absoluteUrl() . $path);
             $this->cacher->invalidateUrl($entry->absoluteUrl() . $path);
         }
     }
