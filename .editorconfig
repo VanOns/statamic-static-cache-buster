@@ -247,5 +247,8 @@ ij_php_while_on_new_line = false
 [*.md]
 trim_trailing_whitespace = false
 
+[*.json]
+indent_size = 2
+
 [*.{yml,yaml}]
 indent_size = 2
