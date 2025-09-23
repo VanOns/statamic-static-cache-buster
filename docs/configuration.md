@@ -22,8 +22,8 @@ If you have a `products` collection where each entry also has a downloads URL:
 ```php
 'additional_entry_paths' => [
     'products' => [
-        '/downloads'
-    ]
+        '/downloads',
+    ],
 ],
 ```
 
@@ -32,9 +32,9 @@ When entries in your `blog_posts` collection also have separate comments and que
 ```php
 'additional_entry_paths' => [
     'blog_posts' => [
-        '/comments'
-        '/questions'
-    ]
+        '/comments',
+        '/questions',
+    ],
 ],
 ```
 
