@@ -17,10 +17,9 @@ class BustEntryStaticCache implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        private Collection                $entries,
+        private Collection $entries,
         private Asset|Entry|LocalizedTerm $value,
-    )
-    {
+    ) {
         $queue = config('statamic/static-cache-buster.queue');
         if ($queue) {
             $this->onQueue($queue);
@@ -29,7 +28,7 @@ class BustEntryStaticCache implements ShouldQueue
 
     public function handle(Buster $buster): void
     {
-        foreach($this->entries as $entry) {
+        foreach ($this->entries as $entry) {
             $buster->bustEntry($entry, $this->value);
         }
     }

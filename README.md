@@ -25,11 +25,13 @@ composer require van-ons/statamic-static-cache-buster
 ### Usage
 
 Once installed, you simply need to use the buster class in Statamic's static cache invalidation configuration:
+
 ```php
 'invalidation' => [
     'class' => VanOns\StatamicStaticCacheBuster\StaticCaching\Buster::class,
 ],
 ```
+
 And you will immediately get the full power of the static cache busting.
 
 The buster adds a lot of extra decisions to the static cache invalidation logic.

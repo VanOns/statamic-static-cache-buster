@@ -39,10 +39,9 @@ class Buster extends DefaultInvalidator
 
     // region Invalidation methods
     public function bustEntry(
-        Entry                     $entry,
+        Entry $entry,
         Asset|Entry|LocalizedTerm $value,
-    ): void
-    {
+    ): void {
         if ($this->valueInFieldSet($value, $entry, $entry->blueprint()->fields()->all())) {
             $this->invalidateEntry($entry);
         }
@@ -127,11 +126,10 @@ class Buster extends DefaultInvalidator
 
     private function valueInFieldSet(
         Asset|Entry|LocalizedTerm $value,
-        Arrayable|array           $data,
-        Arrayable|array           $fieldset,
-        string                    $prefix = '',
-    ): bool
-    {
+        Arrayable|array $data,
+        Arrayable|array $fieldset,
+        string $prefix = '',
+    ): bool {
         foreach ($fieldset as $field) {
             if ($this->valueInField($value, $data, $field, $prefix)) {
                 return true;
@@ -143,11 +141,10 @@ class Buster extends DefaultInvalidator
 
     private function valueInField(
         Asset|Entry|LocalizedTerm $value,
-        Arrayable|array           $data,
-        Arrayable|array           $field,
-        string                    $prefix = '',
-    ): bool
-    {
+        Arrayable|array $data,
+        Arrayable|array $field,
+        string $prefix = '',
+    ): bool {
         if (is_array($field) && array_key_exists('import', $field)) {
             return $this->valueInImportedFieldSet($value, $data, $field, $prefix);
         }
@@ -194,11 +191,10 @@ class Buster extends DefaultInvalidator
 
     private function valueInImportedFieldSet(
         Asset|Entry|LocalizedTerm $value,
-        Arrayable|array           $data,
-        Arrayable|array           $field,
-        string                    $prefix = '',
-    ): bool
-    {
+        Arrayable|array $data,
+        Arrayable|array $field,
+        string $prefix = '',
+    ): bool {
         $fieldset = Fieldset::find($field['import']);
         if (array_key_exists('prefix', $field)) {
             $prefix .= $field['prefix'];
@@ -212,19 +208,17 @@ class Buster extends DefaultInvalidator
 
     private function valueMatchesFieldType(
         Asset|Entry|LocalizedTerm $value,
-        string                    $fieldType,
-    ): bool
-    {
+        string $fieldType,
+    ): bool {
         return ($value instanceof Asset && $fieldType === 'assets')
             || ($value instanceof Entry && $fieldType === 'entries')
             || ($value instanceof LocalizedTerm && $fieldType === 'terms');
     }
 
     private function valueMatchesField(
-        Asset|Entry|LocalizedTerm                                                          $value,
+        Asset|Entry|LocalizedTerm $value,
         Asset|AssetCollection|Page|Entry|EntryCollection|LocalizedTerm|TermCollection|null $fieldValue
-    ): bool
-    {
+    ): bool {
         if (
             ($value instanceof Asset && $fieldValue instanceof Asset && $fieldValue->id === $value->id)
             || ($value instanceof Entry && ($fieldValue instanceof Entry || $fieldValue instanceof Page) && $fieldValue->id === $value->id)
@@ -249,9 +243,8 @@ class Buster extends DefaultInvalidator
 
     private function getReplicatorItemTypeFieldSet(
         string $replicatorItemType,
-        array  $sets,
-    ): array
-    {
+        array $sets,
+    ): array {
         foreach ($sets as $handle => $set) {
             if (array_key_exists('sets', $set)) {
                 return $this->getReplicatorItemTypeFieldSet($replicatorItemType, $set['sets']);
