@@ -27,7 +27,7 @@ If you have a `products` collection where each entry also has a downloads URL:
 ],
 ```
 
-When entries in your `blog_posts` collection also have separate comments & questions URLs:
+When entries in your `blog_posts` collection also have separate comments and questions URLs:
 
 ```php
 'additional_entry_paths' => [
@@ -51,7 +51,7 @@ These jobs are normally added to the default queue, but you can adjust this as n
 ## Chunk size
 
 While the entries to check are chunked to prevent the jobs from taking too long,
-the time it takes to process each entry depends on the size of your blueprint & stored data.
+the time it takes to process each entry depends on the size of your blueprint and stored data.
 
 If the jobs run into your job time limit too often, you can reduce the chunk size.
 Conversely, if your jobs take a short time to finish,

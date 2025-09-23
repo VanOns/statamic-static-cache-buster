@@ -15,7 +15,7 @@ knows it should create a new static cache with the next visit.
 The basic functionality of Statamic will only invalidate the URL directly
 associated with whatever was changed, and any children (if applicable).
 While this works fine with simple websites,
-this is not sufficient when things like globals & entries are
+this is not sufficient when things like globals and entries are
 rendered in other places (such as an entry listing).
 
 Statamic allows you to configure rules to invalidate certain URLs when certain things are changed.
@@ -43,7 +43,7 @@ Here is an overview of how this is implemented:
 This is the invalidation logic the buster adds
 to the basic Statamic Static Cache Invalidation logic,
 which is still fully implemented meaning you can still
-configure & use the fixed URL invalidation rules as normal.
+configure and use the fixed URL invalidation rules as normal.
 
 The buster also has some [configuration] to adjust the logic to your needs.
 
