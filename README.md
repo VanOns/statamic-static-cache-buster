@@ -7,7 +7,7 @@
 [![Github issues](https://img.shields.io/github/issues/VanOns/statamic-static-cache-buster?style=flat-square)](https://github.com/VanOns/statamic-static-cache-buster/issues)
 [![License](https://img.shields.io/github/license/VanOns/statamic-static-cache-buster?style=flat-square)](https://github.com/VanOns/statamic-static-cache-buster/blob/main/LICENSE.md)
 
-Plugin for Statamic that expands the standard cache validation to invalidate the static cache of all relevant URLs.
+A Statamic addon that expands the standard cache validation to invalidate the static cache of all relevant URLs.
 
 ## Quick start
 
