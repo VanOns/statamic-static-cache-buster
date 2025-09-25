@@ -2,7 +2,10 @@
 
 # Statamic Static Cache Buster
 
-<!-- BADGES -->
+[![Latest version on Github](https://img.shields.io/github/release/VanOns/statamic-static-cache-buster.svg?style=flat-square)](https://github.com/VanOns/statamic-static-cache-buster/releases)
+[![Total downloads](https://img.shields.io/packagist/dt/van-ons/statamic-static-cache-buster.svg?style=flat-square)](https://packagist.org/packages/van-ons/statamic-static-cache-buster)
+[![Github issues](https://img.shields.io/github/issues/VanOns/statamic-static-cache-buster?style=flat-square)](https://github.com/VanOns/statamic-static-cache-buster/issues)
+[![License](https://img.shields.io/github/license/VanOns/statamic-static-cache-buster?style=flat-square)](https://github.com/VanOns/statamic-static-cache-buster/blob/main/LICENSE.md)
 
 Plugin for Statamic that expands the standard cache validation to invalidate the static cache of all relevant URLs.
 
