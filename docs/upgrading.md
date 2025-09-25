@@ -1,0 +1,4 @@
+# Upgrading
+
+Please see the [upgrade guide on GitHub](https://github.com/VanOns/statamic-static-cache-buster/blob/main/UPGRADING.md) for more
+information about how to upgrade.
