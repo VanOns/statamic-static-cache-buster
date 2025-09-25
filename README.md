@@ -4,7 +4,7 @@
 
 <!-- BADGES -->
 
-Plugin for Statamic that expands the standard cache validation to invalidate the static cache of all relevant URLs
+Plugin for Statamic that expands the standard cache validation to invalidate the static cache of all relevant URLs.
 
 ## Quick start
 
