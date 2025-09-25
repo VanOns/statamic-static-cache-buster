@@ -7,6 +7,8 @@ updates:
       interval: weekly
     labels:
       - dependencies
+    assignees:
+      - 'VanOns/open-source'
 
   - package-ecosystem: composer
     directory: /
@@ -14,3 +16,5 @@ updates:
       interval: weekly
     labels:
       - dependencies
+    assignees:
+      - 'VanOns/open-source'
