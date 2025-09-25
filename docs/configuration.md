@@ -62,7 +62,7 @@ The default chunk size is 500:
 'chunk_size' => 500,
 ```
 
-# Extending the buster
+## Extending the buster
 
 If there is additional logic needed for your website that is not covered by the configuration,
 you can also extend the buster to implement any specific use cases that should be covered.

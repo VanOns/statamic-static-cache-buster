@@ -1,8 +1,6 @@
-# Functionality
+# Introduction
 
-## Introduction
-
-### Statamic's default behaviour
+## Statamic's default behaviour
 
 Statamic's static caching will save a static cache of URLs when they are first visited.
 This static cache bakes the content directly into the view,
