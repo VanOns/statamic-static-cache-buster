@@ -5,7 +5,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches-ignore:
-      - 'dependabot/github_actions/*'
       - 'dependabot/npm_and_yarn/*'
 
 env:
